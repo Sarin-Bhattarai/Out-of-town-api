@@ -19,4 +19,4 @@ const subRegionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Sub-Region", subRegionSchema);
+module.exports = mongoose.model("SubRegion", subRegionSchema);
