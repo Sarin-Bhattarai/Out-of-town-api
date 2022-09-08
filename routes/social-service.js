@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var multer = require("multer");
-var Region = require("../models/region");
+var Service = require("../models/social-service");
 var { wrapAsync } = require("../helper/catchHandler");
 
 //file or image upload
@@ -38,26 +38,26 @@ const uploads = multer({
   fileFilter: fileFilter,
 });
 
-const type = uploads.single("image");
+const type = uploads.array("image", 2);
 
 //routes
 router.post(
   "/",
   type,
   wrapAsync(async (req, res) => {
-    if (!req.file) {
+    if (!req.files) {
       return res.status(400).json({
         status: "fail",
-        data: { image: "No image selected" },
+        data: { image: "No images selected" },
       });
     }
-    const regionDetails = {
+    const serviceDetails = {
       title: req.body.title,
       description: req.body.description,
-      image: req.file.path,
+      image: req.files.path,
     };
-    const regions = new Region(regionDetails);
-    const result = await regions.save();
+    const services = new Service(serviceDetails);
+    const result = await services.save();
     return res.status(200).json(result);
   })
 );
@@ -65,8 +65,8 @@ router.post(
 router.get(
   "/",
   wrapAsync(async (req, res) => {
-    const regions = await Region.find();
-    return res.json(regions);
+    const services = await Service.find();
+    return res.json(services);
   })
 );
 
@@ -74,32 +74,32 @@ router.patch(
   "/:id",
   type,
   wrapAsync(async (req, res) => {
-    const regionId = req.params.id;
-    const region = await Region.findById(regionId);
-    if (!region) {
+    const serviceId = req.params.id;
+    const service = await Service.findById(serviceId);
+    if (!service) {
       return res.status(404).json({
-        message: "Region not found",
+        message: "Service not found",
       });
     }
-    const updatedRegion = await Region.findByIdAndUpdate(regionId, {
+    const updatedService = await Service.findByIdAndUpdate(serviceId, {
       ...req.body,
     });
-    return res.json(updatedRegion);
+    return res.json(updatedService);
   })
 );
 
 router.delete(
   "/:id",
   wrapAsync(async (req, res) => {
-    const regionId = req.params.id;
-    const region = await Region.findById(regionId);
-    if (!region) {
+    const serviceId = req.params.id;
+    const service = await Service.findById(serviceId);
+    if (!service) {
       return res.status(404).json({
-        message: "Region not found",
+        message: "Service not found",
       });
     }
-    await Region.deleteOne({ _id: regionId });
-    return res.json({ status: "sucess", message: "Region deleted" });
+    await Service.deleteOne({ _id: serviceId });
+    return res.json({ status: "sucess", message: "Service deleted" });
   })
 );
 

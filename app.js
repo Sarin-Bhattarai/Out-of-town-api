@@ -12,6 +12,8 @@ var indexRouter = require("./routes/index");
 var faqRouter = require("./routes/faq");
 var descRouter = require("./routes/homeDesc");
 var regionRouter = require("./routes/region");
+var teamRouter = require("./routes/team");
+var serviceRouter = require("./routes/social-service");
 
 var app = express();
 app.use(cors({ origin: "*" }));
@@ -38,6 +40,8 @@ app.use("/", indexRouter);
 app.use("/api/faqs", faqRouter);
 app.use("/api/descs", descRouter);
 app.use("/api/regions", regionRouter);
+app.use("/api/teams", teamRouter);
+app.use("/api/services", serviceRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

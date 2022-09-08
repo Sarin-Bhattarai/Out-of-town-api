@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var multer = require("multer");
-var Region = require("../models/region");
+var Team = require("../models/team");
 var { wrapAsync } = require("../helper/catchHandler");
 
 //file or image upload
@@ -51,13 +51,13 @@ router.post(
         data: { image: "No image selected" },
       });
     }
-    const regionDetails = {
-      title: req.body.title,
-      description: req.body.description,
+    const teamDetails = {
+      name: req.body.name,
+      role: req.body.role,
       image: req.file.path,
     };
-    const regions = new Region(regionDetails);
-    const result = await regions.save();
+    const teams = new Team(teamDetails);
+    const result = await teams.save();
     return res.status(200).json(result);
   })
 );
@@ -65,8 +65,8 @@ router.post(
 router.get(
   "/",
   wrapAsync(async (req, res) => {
-    const regions = await Region.find();
-    return res.json(regions);
+    const teams = await Team.find();
+    return res.json(teams);
   })
 );
 
@@ -74,32 +74,32 @@ router.patch(
   "/:id",
   type,
   wrapAsync(async (req, res) => {
-    const regionId = req.params.id;
-    const region = await Region.findById(regionId);
-    if (!region) {
+    const teamId = req.params.id;
+    const team = await Team.findById(teamId);
+    if (!team) {
       return res.status(404).json({
-        message: "Region not found",
+        message: "Person not found",
       });
     }
-    const updatedRegion = await Region.findByIdAndUpdate(regionId, {
+    const updatedTeam = await Team.findByIdAndUpdate(teamId, {
       ...req.body,
     });
-    return res.json(updatedRegion);
+    return res.json(updatedTeam);
   })
 );
 
 router.delete(
   "/:id",
   wrapAsync(async (req, res) => {
-    const regionId = req.params.id;
-    const region = await Region.findById(regionId);
-    if (!region) {
+    const teamId = req.params.id;
+    const team = await Team.findById(teamId);
+    if (!team) {
       return res.status(404).json({
-        message: "Region not found",
+        message: "Person not found",
       });
     }
-    await Region.deleteOne({ _id: regionId });
-    return res.json({ status: "sucess", message: "Region deleted" });
+    await Team.deleteOne({ _id: teamId });
+    return res.json({ status: "sucess", message: "Team deleted" });
   })
 );
 
