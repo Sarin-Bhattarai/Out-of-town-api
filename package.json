@@ -2,8 +2,11 @@
   "name": "server",
   "version": "0.0.0",
   "private": true,
+  "engines":{
+    "node":"14.x"
+  },
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -14,7 +17,7 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "mongoose": "^6.5.3",
-    "morgan": "~1.9.1",
+    "morgan": "~1.9.1", 
     "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.19"
   }
