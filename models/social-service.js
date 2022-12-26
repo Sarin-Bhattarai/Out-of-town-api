@@ -13,7 +13,7 @@ const serviceSchema = new mongoose.Schema(
       trim: true,
     },
     image: {
-      type: String,
+      type: Array,
     },
   },
   { timestamps: true }

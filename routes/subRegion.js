@@ -51,10 +51,13 @@ router.post(
         data: { image: "No images selected" },
       });
     }
+    // console.log(req.files);
     const subRegionDetails = {
       title: req.body.title,
       description: req.body.description,
-      image: req.files.path,
+      image: req.files.map((item) => item.path),
+      includedetails: req.body.includedetails,
+      excludedetails: req.body.excludedetails,
     };
     const subRegions = new SubRegion(subRegionDetails);
     const result = await subRegions.save();

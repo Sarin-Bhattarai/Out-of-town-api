@@ -13,7 +13,19 @@ const subRegionSchema = new mongoose.Schema(
       trim: true,
     },
     image: {
+      type: Array,
+    },
+
+    includedetails: {
       type: String,
+      required: true,
+      trim: true,
+    },
+
+    excludedetails: {
+      type: String,
+      required: true,
+      trim: true,
     },
   },
   { timestamps: true }

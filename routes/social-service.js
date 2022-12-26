@@ -38,7 +38,7 @@ const uploads = multer({
   fileFilter: fileFilter,
 });
 
-const type = uploads.array("image", 2);
+const type = uploads.array("image", 3);
 
 //routes
 router.post(
@@ -54,7 +54,7 @@ router.post(
     const serviceDetails = {
       title: req.body.title,
       description: req.body.description,
-      image: req.files.path,
+      image: req.files.map((item) => item.path),
     };
     const services = new Service(serviceDetails);
     const result = await services.save();
