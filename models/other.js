@@ -14,4 +14,4 @@ const otherSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Region", otherSchema);
+module.exports = mongoose.model("Other", otherSchema);
