@@ -81,10 +81,14 @@ router.patch(
         message: "Region not found",
       });
     }
-    const updatedRegion = await Region.findByIdAndUpdate(regionId, {
-      ...req.body,
-    });
-    return res.json(updatedRegion);
+    // check if a new image file was uploaded
+    if (req.file) {
+      region.image = req.file.path;
+    }
+    // update the region document with the request body
+    Object.assign(region, req.body);
+    await region.save();
+    return res.json(region);
   })
 );
 

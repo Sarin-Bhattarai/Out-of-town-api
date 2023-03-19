@@ -78,13 +78,16 @@ router.patch(
     const team = await Team.findById(teamId);
     if (!team) {
       return res.status(404).json({
-        message: "Person not found",
+        message: "Team not found",
       });
     }
-    const updatedTeam = await Team.findByIdAndUpdate(teamId, {
-      ...req.body,
-    });
-    return res.json(updatedTeam);
+    if (req.file) {
+      team.image = req.file.path;
+    }
+    // update the team document with the request body
+    Object.assign(team, req.body);
+    await team.save();
+    return res.json(team);
   })
 );
 
