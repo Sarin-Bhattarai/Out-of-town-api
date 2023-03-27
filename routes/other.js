@@ -80,10 +80,12 @@ router.patch(
         message: "Other service not found",
       });
     }
-    const updatedOther = await Other.findByIdAndUpdate(otherId, {
-      ...req.body,
-    });
-    return res.json(updatedOther);
+    if (req.file) {
+      other.image = req.file.path;
+    }
+    Object.assign(other, req.body);
+    await other.save();
+    return res.json(other);
   })
 );
 
