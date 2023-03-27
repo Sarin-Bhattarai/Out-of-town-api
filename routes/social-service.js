@@ -81,10 +81,13 @@ router.patch(
         message: "Service not found",
       });
     }
-    const updatedService = await Service.findByIdAndUpdate(serviceId, {
-      ...req.body,
-    });
-    return res.json(updatedService);
+    // check if a new image file was uploaded
+    if (req.files) {
+      service.image = req.files.map((item) => item.path);
+    }
+    Object.assign(service, req.body);
+    await service.save();
+    return res.json(service);
   })
 );
 

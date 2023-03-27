@@ -84,10 +84,12 @@ router.patch(
         message: "Sub-Region not found",
       });
     }
-    const updatedSubRegion = await SubRegion.findByIdAndUpdate(subRegionId, {
-      ...req.body,
-    });
-    return res.json(updatedSubRegion);
+    if (req.files) {
+      subRegion.image = req.files.map((item) => item.path);
+    }
+    Object.assign(subRegion, req.body);
+    await subRegion.save();
+    return res.json(subRegion);
   })
 );
 
