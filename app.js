@@ -30,10 +30,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use((req, res, next) => {
-  res.setHeader("Cache-Control", "no-store");
-  next();
-});
 app.use("/uploads", (_, res, next) => {
   res.set("Cross-Origin-Resource-Policy", "cross-origin");
   next();
