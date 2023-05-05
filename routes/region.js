@@ -1,51 +1,18 @@
 var express = require("express");
 var router = express.Router();
 var multer = require("multer");
+const upload = multer();
 var Region = require("../models/region");
 var { wrapAsync } = require("../helper/catchHandler");
 
-//file or image upload
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads/");
-  },
-
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "_" + file.originalname);
-  },
-});
-
-//filtering the requested file
-const fileFilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/png" ||
-    file.mimetype === "image/jpg"
-  ) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-    console.log("Image should be in jpeg || png || jpg format");
-  }
-};
-
-//limiting the size of file
-const uploads = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5,
-  },
-  fileFilter: fileFilter,
-});
-
-const type = uploads.single("image");
+const type = upload.none();
 
 //routes
 router.post(
   "/",
   type,
   wrapAsync(async (req, res) => {
-    if (!req.file) {
+    if (!req.body.image) {
       return res.status(400).json({
         status: "fail",
         data: { image: "No image selected" },
@@ -54,7 +21,7 @@ router.post(
     const regionDetails = {
       title: req.body.title,
       description: req.body.description,
-      image: req.file.path,
+      image: req.body.image,
     };
     const regions = new Region(regionDetails);
     const result = await regions.save();
@@ -82,8 +49,8 @@ router.patch(
       });
     }
     // check if a new image file was uploaded
-    if (req.file) {
-      region.image = req.file.path;
+    if (req.body.image) {
+      region.image = req.body.image;
     }
     // update the region document with the request body
     Object.assign(region, req.body);
