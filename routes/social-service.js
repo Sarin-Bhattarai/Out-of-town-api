@@ -10,6 +10,7 @@ const type = upload.none();
 //routes
 router.post(
   "/",
+  type,
   wrapAsync(async (req, res) => {
     if (!req.body.images) {
       return res.status(400).json({
